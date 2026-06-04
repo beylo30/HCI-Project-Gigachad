@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MapMeet Hi-Fi Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css?v=naver-poi-1" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="phone" id="phone" aria-label="MapMeet mobile prototype">
+      <section class="auth-screen" id="authScreen" aria-label="Welcome screen">
+        <div class="auth-card">
+          <div class="auth-logo" aria-hidden="true">
+            <img src="assets/mapmeet-logo.png" alt="" />
+          </div>
+          <p class="eyebrow small">Welcome to</p>
+          <h1>MapMeet</h1>
+          <p class="auth-copy">Find low-pressure activities nearby and join when it feels comfortable.</p>
+
+          <div class="auth-tabs" aria-label="Authentication options">
+            <button class="auth-tab active" type="button" data-auth-mode="login">Login</button>
+            <button class="auth-tab signup-link" type="button" data-auth-mode="signup">Sign Up</button>
+          </div>
+
+          <form class="auth-form" id="authForm">
+            <label class="auth-name-field hidden" id="authNameField">
+              <span>Name</span>
+              <input id="authNameInput" class="text-input" type="text" placeholder="Your name" autocomplete="name" />
+            </label>
+            <label>
+              <span>Email</span>
+              <input id="authEmailInput" class="text-input" type="email" placeholder="you@example.com" autocomplete="email" />
+            </label>
+            <label>
+              <span>Password</span>
+              <input id="authPasswordInput" class="text-input" type="password" placeholder="At least 6 characters" autocomplete="current-password" />
+            </label>
+            <p class="auth-error hidden" id="authError"></p>
+            <button class="primary-button wide" id="authSubmitButton" type="submit">LOGIN</button>
+          </form>
+        </div>
+      </section>
+
+      <div class="phone-chrome">
+        <span></span>
+      </div>
+
+      <header class="top-bar">
+        <button class="icon-button" id="topProfileButton" type="button" data-action="open-profile" aria-label="Open my profile">◉</button>
+        <div class="brand-lockup">
+          <p class="brand-title">MapMeet</p>
+          <p class="brand-subtitle">Social plans, less pressure</p>
+        </div>
+        <div class="top-actions">
+          <button class="icon-button" type="button" data-action="open-friends" aria-label="Open friends">👥</button>
+          <button class="icon-button notification-button" type="button" data-action="open-notifications" aria-label="Open notifications">
+            🔔
+            <span id="notificationBadge" class="badge">0</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="view view-active map-view" data-view="map" aria-label="Map screen">
+        <div class="map-panel">
+          <div class="map-headline">
+            <div>
+              <p class="eyebrow small">Today around Anam</p>
+              <h2>Join when it feels comfortable</h2>
+            </div>
+            <button class="secondary-pill" type="button" data-action="open-ai">AI Match</button>
+          </div>
+
+          <div class="map-stats" id="mapStats"></div>
+
+          <div class="category-strip" id="categoryStrip" aria-label="Filter by category"></div>
+
+          <div class="map-area">
+            <div id="liveMap" aria-label="Activity map"></div>
+            <div class="map-provider-badge" id="mapProviderBadge">Live map</div>
+            <div class="map-floating-actions">
+              <button class="floating-button locate-button" type="button" data-action="locate-user" aria-label="Find my current location" title="Find my current location">🧭</button>
+            </div>
+          </div>
+
+          <article class="activity-sheet hidden" id="activitySheet" aria-live="polite">
+            <div class="sheet-header">
+              <div class="sheet-badge-row">
+                <span class="sheet-icon" id="sheetIcon">⛰️</span>
+                <div>
+                  <p class="sheet-category" id="sheetCategory">Outdoor &amp; Active</p>
+                  <h3 id="sheetTitle">John wants to go hiking at Inwangsan</h3>
+                </div>
+              </div>
+              <button class="close-button" type="button" data-action="close-sheet" aria-label="Close activity details">×</button>
+            </div>
+
+            <div class="sheet-meta">
+              <span id="sheetTime">Tomorrow · 10:00 AM</span>
+              <span id="sheetPlace">Inwangsan trail entrance</span>
+            </div>
+
+            <div class="comfort-panel" id="comfortPanel"></div>
+
+            <blockquote class="host-note" id="hostNote"></blockquote>
+
+            <p class="sheet-description" id="sheetDescription"></p>
+
+            <div class="member-row" id="memberRow"></div>
+
+            <div class="sheet-footer">
+              <div>
+                <p class="joined-count" id="sheetJoined">10 people have joined</p>
+                <button class="text-link" type="button" data-action="open-activity-info">See full details</button>
+              </div>
+              <button class="primary-button" id="joinActivityBtn" type="button" data-action="join-activity">Join Activity</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view friends-view" data-view="friends" aria-label="Friends screen">
+        <div class="page-header">
+          <button class="back-button" type="button" data-action="go-back" aria-label="Go back">‹</button>
+          <div>
+            <p class="eyebrow small">Social circle</p>
+            <h2>Friends</h2>
+          </div>
+        </div>
+        <div class="page-body">
+          <div class="page-card">
+            <h3>People you already trust</h3>
+            <p>Message friends directly or join what they are planning nearby.</p>
+          </div>
+          <div class="friend-list" id="friendList"></div>
+        </div>
+      </section>
+
+      <section class="view notifications-view" data-view="notifications" aria-label="Notifications screen">
+        <div class="page-header">
+          <button class="back-button" type="button" data-action="go-back" aria-label="Go back">‹</button>
+          <div>
+            <p class="eyebrow small">Updates</p>
+            <h2>Notifications</h2>
+          </div>
+        </div>
+        <div class="page-body">
+          <div class="page-card compact">
+            <strong id="notificationSummary">You are all caught up.</strong>
+          </div>
+          <div class="notification-list" id="notificationList"></div>
+          <div class="empty-state hidden" id="notificationEmpty">
+            <div class="empty-icon">✨</div>
+            <p>No new requests right now.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="view profile-view" data-view="profile" aria-label="Profile screen">
+        <div class="page-header">
+          <button class="back-button" type="button" data-action="go-back" aria-label="Go back">‹</button>
+          <div>
+            <p class="eyebrow small">Profile</p>
+            <h2 id="profileHeaderTitle">John</h2>
+          </div>
+        </div>
+        <div class="page-body profile-body">
+          <div class="profile-hero">
+            <div class="profile-avatar" id="profileAvatar">☺</div>
+            <h3 id="profileName">John, 26</h3>
+            <p class="profile-handle" id="profileHandle">@john26</p>
+            <button class="primary-button ghost profile-edit-button" id="profilePrimaryAction" type="button">Add Friend</button>
+          </div>
+
+          <div class="detail-card photos-card">
+            <h4>Photos</h4>
+            <div class="photo-row" id="profilePhotos"></div>
+            <label class="photo-upload-control hidden" id="profilePhotoUploadLabel">
+              <input id="profilePhotoInput" type="file" accept="image/*" />
+              <span>+ Add Photo</span>
+            </label>
+          </div>
+
+          <div class="detail-card">
+            <h4>About Me</h4>
+            <p class="status-pill" id="profileMood">I am away</p>
+            <ul id="profileAbout"></ul>
+          </div>
+
+          <div class="detail-card">
+            <h4>Interests</h4>
+            <div class="chip-wrap" id="profileInterests"></div>
+          </div>
+
+          <div class="detail-card">
+            <h4>Language</h4>
+            <p id="profileLanguage">English · Korean</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="view messages-view" data-view="messages" aria-label="Messages screen">
+        <div class="page-header stack">
+          <div class="header-row">
+            <button class="back-button" type="button" data-action="go-back" aria-label="Go back">‹</button>
+            <div>
+              <p class="eyebrow small">Conversation hub</p>
+              <h2>Messages</h2>
+            </div>
+          </div>
+
+          <div class="segmented-control" id="messageTypeTabs">
+            <button class="segment active" type="button" data-message-type="activity">Activity Chats</button>
+            <button class="segment" type="button" data-message-type="friends">Friend Chats</button>
+          </div>
+
+          <div class="segmented-control small" id="chatFilterTabs">
+            <button class="segment active" type="button" data-chat-filter="present">Now / Upcoming</button>
+            <button class="segment" type="button" data-chat-filter="past">Past</button>
+          </div>
+        </div>
+        <div class="page-body conversation-list" id="conversationList"></div>
+      </section>
+
+      <section class="view chat-view" data-view="chat" aria-label="Chat screen">
+        <div class="chat-header">
+          <button class="back-button" type="button" data-action="open-messages" aria-label="Back to messages">‹</button>
+          <div class="chat-heading">
+            <span class="sheet-icon small" id="chatIcon">⛰️</span>
+            <div>
+              <h2 id="chatTitle">Hiking Inwangsan</h2>
+              <p id="chatMeta">Created activity</p>
+            </div>
+          </div>
+          <button class="icon-button" type="button" data-action="open-chat-info" aria-label="Open chat details">i</button>
+        </div>
+
+        <div class="message-list" id="messageList"></div>
+
+        <form class="input-bar" id="chatForm">
+          <input id="chatInput" class="text-input" type="text" placeholder="Send a message" maxlength="180" />
+          <button class="primary-button small" type="submit">Send</button>
+        </form>
+      </section>
+
+      <nav class="bottom-bar" aria-label="Primary navigation">
+        <button class="nav-button active" type="button" data-nav="map">🗺️<span>Map</span></button>
+        <button class="nav-button create" type="button" data-action="open-create">＋<span>Create</span></button>
+        <button class="nav-button" type="button" data-nav="messages">💬<span>Messages</span></button>
+      </nav>
+
+      <section class="modal" id="aiModal" aria-hidden="true">
+        <div class="modal-panel">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow small">Smart guidance</p>
+              <h2>AI Activity Match</h2>
+            </div>
+            <button class="close-button" type="button" data-action="close-ai" aria-label="Close AI suggestions">×</button>
+          </div>
+          <div class="page-card compact">
+            <p>Tell MapMeet what kind of mood you are in, and it will recommend nearby activities or a new idea to start.</p>
+          </div>
+          <div class="chip-wrap" id="aiSuggestionPrompts"></div>
+          <div class="ai-feed" id="aiFeed"></div>
+          <form class="input-bar modal-input" id="aiForm">
+            <input id="aiInput" class="text-input" type="text" placeholder="Example: I want a quiet place to study tonight" maxlength="180" />
+            <button class="primary-button small" type="submit">Send</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="modal" id="createModal" aria-hidden="true">
+        <div class="modal-panel large">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow small">Create activity</p>
+              <h2>Start a plan others can join</h2>
+            </div>
+            <button class="close-button" type="button" data-action="close-create" aria-label="Close create activity form">×</button>
+          </div>
+
+          <form id="createForm" class="form-grid">
+            <label>
+              <span>Activity title</span>
+              <input id="activityTitleInput" class="text-input" type="text" placeholder="Study sprint at a cafe" maxlength="70" />
+            </label>
+
+            <label>
+              <span>Place / meeting point</span>
+              <input id="activityPlaceInput" class="text-input" type="text" placeholder="Nice Caffein Club Anam" maxlength="90" />
+            </label>
+
+            <p class="helper-text" id="placeStatus">Type a place and select the best match so MapMeet can pin it accurately.</p>
+            <div class="place-suggestions" id="placeSuggestions"></div>
+
+            <div class="two-col">
+              <label>
+                <span>Date</span>
+                <input id="activityDateInput" class="text-input" type="date" />
+              </label>
+              <label>
+                <span>Time</span>
+                <input id="activityTimeInput" class="text-input" type="time" />
+              </label>
+            </div>
+
+            <div class="chip-wrap" id="quickDateRow">
+              <button class="filter-chip active" type="button" data-quick-date="today">Today</button>
+              <button class="filter-chip" type="button" data-quick-date="tomorrow">Tomorrow</button>
+            </div>
+
+            <label>
+              <span class="field-row">
+                Short description
+                <button class="text-link inline-action" type="button" data-action="help-description">AI help</button>
+              </span>
+              <textarea id="activityDescInput" class="text-area" rows="4" placeholder="What should people expect, and who is this for?"></textarea>
+            </label>
+
+            <div class="two-col">
+              <label>
+                <span>Fit</span>
+                <select id="activityFitInput" class="text-input">
+                  <option>Newcomers welcome</option>
+                  <option>First-timers welcome</option>
+                  <option>Solo joiners welcome</option>
+                  <option>Join silently okay</option>
+                  <option>Open to anyone</option>
+                </select>
+              </label>
+              <label>
+                <span>Level</span>
+                <select id="activityLevelInput" class="text-input">
+                  <option>Beginner-friendly</option>
+                  <option>Low-pressure</option>
+                  <option>Very easy</option>
+                  <option>Easy join</option>
+                  <option>Mixed skill</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="two-col">
+              <label>
+                <span>Language</span>
+                <div class="language-picker">
+                  <div class="language-search-row">
+                    <input id="activityLanguageSearch" class="text-input language-search-input" type="search" placeholder="Search language" autocomplete="off" />
+                    <button class="primary-button small language-search-button" type="button" data-action="search-language">Search</button>
+                  </div>
+                  <div class="language-choice-list" id="activityLanguageInput"></div>
+                </div>
+              </label>
+              <label>
+                <span>Vibe</span>
+                <select id="activityVibeInput" class="text-input">
+                  <option>Casual small group</option>
+                  <option>Quiet focus</option>
+                  <option>Relaxed chat</option>
+                  <option>Food-first</option>
+                  <option>Active but relaxed</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              <span>Participant limit</span>
+              <input id="activityLimitInput" class="text-input" type="number" min="2" max="20" value="6" />
+            </label>
+
+            <label>
+              <span>Welcome note</span>
+              <textarea id="activityHostNoteInput" class="text-area compact" rows="3" placeholder="Example: We will meet at the entrance first, so nobody has to arrive alone."></textarea>
+            </label>
+
+            <div>
+              <span class="field-label">Suggested category</span>
+              <div class="category-grid" id="categoryGrid"></div>
+            </div>
+
+            <button class="primary-button wide" type="submit">Create Activity</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="modal" id="activityInfoModal" aria-hidden="true">
+        <div class="modal-panel">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow small">Activity details</p>
+              <h2 id="activityInfoTitle">Hiking Inwangsan</h2>
+            </div>
+            <button class="close-button" type="button" data-action="close-activity-info" aria-label="Close activity details">×</button>
+          </div>
+          <div class="detail-card">
+            <h4>Where</h4>
+            <p id="activityInfoWhere"></p>
+          </div>
+          <div class="detail-card">
+            <h4>When</h4>
+            <p id="activityInfoTime"></p>
+          </div>
+          <div class="detail-card">
+            <h4>What to expect</h4>
+            <p id="activityInfoDescription"></p>
+          </div>
+          <div class="detail-card">
+            <h4>Social fit</h4>
+            <div class="chip-wrap" id="activityInfoComfort"></div>
+          </div>
+          <div class="detail-card">
+            <h4>After the activity</h4>
+            <p id="activityInfoBoundary"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="modal" id="mapStatModal" aria-hidden="true">
+        <div class="modal-panel">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow small" id="mapStatEyebrow">Map summary</p>
+              <h2 id="mapStatTitle">Open activities</h2>
+            </div>
+            <button class="close-button" type="button" data-action="close-map-stat" aria-label="Close map summary">×</button>
+          </div>
+          <div class="stat-detail-list" id="mapStatList"></div>
+        </div>
+      </section>
+
+      <section class="modal" id="boundaryModal" aria-hidden="true">
+        <div class="modal-panel">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow small">After activity</p>
+              <h2>Choose your connection level</h2>
+            </div>
+            <button class="close-button" type="button" data-action="close-boundary" aria-label="Close connection choices">×</button>
+          </div>
+          <div class="page-card compact">
+            <p>MapMeet keeps the meetup low-pressure by letting you decide what happens after joining.</p>
+          </div>
+          <div class="choice-list">
+            <button class="choice-card" type="button" data-boundary-choice="activity-only">
+              <strong>Activity-only chat</strong>
+              <span>Coordinate for this plan without adding anyone as a friend.</span>
+            </button>
+            <button class="choice-card" type="button" data-boundary-choice="add-friends">
+              <strong>Open to new friends</strong>
+              <span>Let participants know you are comfortable staying connected.</span>
+            </button>
+            <button class="choice-card" type="button" data-boundary-choice="leave-after">
+              <strong>Leave after event</strong>
+              <span>Enjoy the activity and automatically mute the chat afterward.</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="modal" id="preferencesModal" aria-hidden="true">
+        <div class="modal-panel">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow small">Profile</p>
+              <h2>Edit Preferences</h2>
+            </div>
+            <button class="close-button" type="button" data-action="close-preferences" aria-label="Close preferences">×</button>
+          </div>
+          <form id="preferencesForm" class="form-grid">
+            <div>
+              <span class="field-label">Profile picture</span>
+              <button class="primary-button ghost wide preference-photo-button" type="button" data-action="choose-profile-picture">Choose picture</button>
+            </div>
+            <label>
+              <span>Name</span>
+              <input id="preferenceNameInput" class="text-input" type="text" maxlength="40" />
+            </label>
+            <label>
+              <span>IG name</span>
+              <input id="preferenceHandleInput" class="text-input" type="text" placeholder="@mapmeet_you" maxlength="40" />
+            </label>
+            <label>
+              <span>Status</span>
+              <select id="preferenceMoodInput" class="text-input">
+                <option>Available</option>
+                <option>Busy</option>
+                <option>Studying</option>
+                <option>Looking for plans</option>
+                <option>Open to meeting new people</option>
+                <option>Away</option>
+              </select>
+            </label>
+            <label>
+              <span>About me</span>
+              <textarea id="preferenceAboutInput" class="text-area" rows="4" placeholder="One detail per line"></textarea>
+            </label>
+            <label>
+              <span>Interests</span>
+              <input id="preferenceInterestsInput" class="text-input" type="text" placeholder="hiking, music, foodie" maxlength="120" />
+            </label>
+            <label>
+              <span>Language</span>
+              <div class="language-picker">
+                <div class="language-search-row">
+                  <input id="preferenceLanguageSearch" class="text-input language-search-input" type="search" placeholder="Search language" autocomplete="off" />
+                  <button class="primary-button small language-search-button" type="button" data-action="search-profile-language">Search</button>
+                </div>
+                <div class="language-choice-list" id="preferenceLanguageInput"></div>
+              </div>
+            </label>
+            <button class="primary-button wide" type="submit">Save Preferences</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="modal" id="photoConfirmModal" aria-hidden="true">
+        <div class="modal-panel">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow small">Profile photo</p>
+              <h2>Use this photo?</h2>
+            </div>
+            <button class="close-button" type="button" data-action="cancel-photo-upload" aria-label="Cancel photo upload">×</button>
+          </div>
+          <div class="photo-confirm-preview">
+            <img id="photoConfirmPreview" alt="Selected profile preview" />
+          </div>
+          <div class="photo-confirm-actions">
+            <button class="primary-button ghost" type="button" data-action="cancel-photo-upload">Choose Another</button>
+            <button class="primary-button" type="button" data-action="confirm-photo-upload">Use This Photo</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="modal" id="photoDeleteModal" aria-hidden="true">
+        <div class="modal-panel">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow small">Profile photo</p>
+              <h2>Delete this photo?</h2>
+            </div>
+            <button class="close-button" type="button" data-action="cancel-photo-delete" aria-label="Cancel photo delete">×</button>
+          </div>
+          <div class="photo-confirm-preview">
+            <img id="photoDeletePreview" alt="Photo selected for deletion" />
+            <span id="photoDeleteEmojiPreview" class="photo-delete-emoji-preview"></span>
+          </div>
+          <div class="photo-confirm-actions">
+            <button class="primary-button ghost" type="button" data-action="cancel-photo-delete">Go Back</button>
+            <button class="primary-button danger" type="button" data-action="confirm-photo-delete">🗑️ Delete Photo</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="modal" id="photoViewerModal" aria-hidden="true">
+        <div class="modal-panel large">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow small">Profile photo</p>
+              <h2>Photo Preview</h2>
+            </div>
+            <button class="close-button" type="button" data-action="close-photo-viewer" aria-label="Close photo preview">×</button>
+          </div>
+          <div class="photo-viewer-frame">
+            <img id="photoViewerImage" alt="Selected profile photo" />
+            <span id="photoViewerEmoji" class="photo-delete-emoji-preview"></span>
+          </div>
+          <button class="primary-button danger small photo-viewer-delete" type="button" data-action="request-photo-delete">🗑️ Delete Photo</button>
+        </div>
+      </section>
+
+      <section class="modal" id="photoGalleryModal" aria-hidden="true">
+        <div class="modal-panel large">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow small">Profile photos</p>
+              <h2>All Photos</h2>
+            </div>
+            <button class="close-button" type="button" data-action="close-photo-gallery" aria-label="Close photo gallery">×</button>
+          </div>
+          <div class="photo-gallery-grid" id="photoGalleryGrid"></div>
+        </div>
+      </section>
+
+      <div class="toast" id="toast" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="config.js"></script>
+  <script src="script.js?v=naver-english-map-1"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "mapmeet",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MapMeet HCI prototype with Naver Maps and Gemini AI support.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
