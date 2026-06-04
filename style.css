@@ -329,6 +329,8 @@ button {
 
 .view {
   inset: 96px 0 80px;
+  max-width: 100%;
+  overflow-x: hidden;
   opacity: 0;
   pointer-events: none;
   transform: translateX(22px);
@@ -1275,6 +1277,8 @@ button {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
+  width: 100%;
+  min-width: 0;
   padding: 6px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.58);
@@ -1286,12 +1290,16 @@ button {
 }
 
 .segment {
+  min-width: 0;
   padding: 11px 10px;
   border-radius: 14px;
   background: transparent;
   color: var(--muted);
   font-size: 0.85rem;
   font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .segment.active {
@@ -1305,8 +1313,32 @@ button {
   gap: 12px;
 }
 
+.messages-view,
+.messages-view *,
+.chat-view,
+.chat-view * {
+  max-width: 100%;
+}
+
+.messages-view .page-header,
+.messages-view .page-body,
+.messages-view .conversation-list,
+.chat-view .chat-header,
+.chat-view .message-list,
+.chat-view .input-bar {
+  width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+.messages-view .segmented-control {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
 .conversation-card {
   justify-content: space-between;
+  width: 100%;
+  min-width: 0;
 }
 
 .conversation-content {
@@ -1319,6 +1351,7 @@ button {
   display: flex;
   justify-content: space-between;
   gap: 10px;
+  min-width: 0;
   margin-bottom: 4px;
 }
 
@@ -1331,6 +1364,7 @@ button {
 }
 
 .conversation-meta {
+  flex: 0 0 auto;
   font-size: 0.72rem;
   font-weight: 700;
 }
@@ -1345,6 +1379,8 @@ button {
 .chat-view {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  overflow-x: hidden;
 }
 
 .chat-view .message-list {
@@ -1360,6 +1396,7 @@ button {
   display: flex;
   gap: 10px;
   align-items: flex-end;
+  min-width: 0;
 }
 
 .message-row.me {
@@ -1373,6 +1410,7 @@ button {
 
 .message-stack {
   max-width: 74%;
+  min-width: 0;
 }
 
 .message-name {
@@ -1383,11 +1421,14 @@ button {
 }
 
 .message-bubble {
+  max-width: 100%;
   padding: 12px 14px;
   border-radius: 18px 18px 18px 6px;
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.68);
   line-height: 1.45;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   box-shadow: 0 8px 20px rgba(20, 33, 61, 0.08);
 }
 
@@ -1416,10 +1457,12 @@ button {
   gap: 10px;
   align-items: center;
   padding: 14px 18px 4px;
+  min-width: 0;
 }
 
 .text-input,
 .text-area {
+  min-width: 0;
   width: 100%;
   border: 1px solid rgba(20, 33, 61, 0.12);
   border-radius: 18px;
