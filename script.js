@@ -463,6 +463,144 @@ const seedActivities = [
       { name: "Emma", text: "I am already at the cafe and found a big table." },
       { name: "Noah", text: "Nice, I will be there in 10 minutes." }
     ]
+  },
+  {
+    id: "act-night-market",
+    icon: "🌙",
+    category: "Nightlife",
+    status: "present",
+    host: "Minji",
+    title: "Minji wants to explore a night market together",
+    shortTitle: "Night market walk",
+    place: "Dongdaemun Night Market",
+    timeLabel: "Tonight · 8:30 PM",
+    description: "Browse food stalls, see the evening lights, and stop wherever the group finds something interesting.",
+    capacity: 8,
+    difficulty: "Easy evening plan",
+    openness: "New people welcome",
+    languages: ["English", "Korean"],
+    vibe: "Lively but flexible",
+    hostNote: "We will meet outside the main entrance. It is fine to leave early or join only for food.",
+    boundary: "One-night plan with no expectation to continue afterward.",
+    joined: 4,
+    members: ["Minji", "Leo", "Hana", "Sam"],
+    coords: [37.5878, 127.0408],
+    messages: [{ name: "Minji", text: "Let us start with the street-food section and decide from there." }]
+  },
+  {
+    id: "act-palace-photo",
+    icon: "📸",
+    category: "Sightseeing",
+    status: "present",
+    host: "Sofia",
+    title: "Sofia wants to take photos around the palace",
+    shortTitle: "Palace photo walk",
+    place: "Gyeongbokgung Palace Gate",
+    timeLabel: "Tomorrow · 2:00 PM",
+    description: "A relaxed photo walk for phone cameras and beginners. We will explore slowly and share good viewpoints.",
+    capacity: 7,
+    difficulty: "Gentle walking",
+    openness: "Come with any camera",
+    languages: ["English", "Korean", "Spanish"],
+    vibe: "Curious and creative",
+    hostNote: "No photography experience is needed. I will wait by the ticket booth with a blue tote bag.",
+    boundary: "Photos can be shared in the activity chat; adding friends is optional.",
+    joined: 3,
+    members: ["Sofia", "Mateo", "Yuna"],
+    coords: [37.5938, 127.0295],
+    messages: [{ name: "Sofia", text: "Cloudy weather is okay too; the palace colors still look great." }]
+  },
+  {
+    id: "act-board-games",
+    icon: "🎲",
+    category: "Entertainment",
+    status: "present",
+    host: "Chris",
+    title: "Chris wants to play beginner board games",
+    shortTitle: "Board game evening",
+    place: "Anam Board Game Cafe",
+    timeLabel: "Tomorrow · 6:30 PM",
+    description: "Learn two short games with simple rules. The group will vote before starting each round.",
+    capacity: 6,
+    difficulty: "Beginner games",
+    openness: "Rules explained first",
+    languages: ["English", "Korean"],
+    vibe: "Playful small group",
+    hostNote: "You can watch the first round before deciding whether to play.",
+    boundary: "This is a one-session game night; future invitations are optional.",
+    joined: 4,
+    members: ["Chris", "Maya", "Jun", "Ella"],
+    coords: [37.5899, 127.0374],
+    messages: [{ name: "Chris", text: "I will bring a cooperative game and one quick card game." }]
+  },
+  {
+    id: "act-vintage-shopping",
+    icon: "🛍️",
+    category: "Shopping",
+    status: "present",
+    host: "Ava",
+    title: "Ava wants to browse vintage shops",
+    shortTitle: "Vintage shop browsing",
+    place: "Seongbuk Vintage Street",
+    timeLabel: "Saturday · 1:00 PM",
+    description: "Casual window-shopping with no pressure to buy anything. We can stop for a snack afterward.",
+    capacity: 5,
+    difficulty: "Easy walking",
+    openness: "Browsing only is okay",
+    languages: ["English", "Korean", "Japanese"],
+    vibe: "Relaxed discovery",
+    hostNote: "Set your own budget and skip any shop you are not interested in.",
+    boundary: "Everyone can head home separately after the final shop.",
+    joined: 2,
+    members: ["Ava", "Rina"],
+    coords: [37.5847, 127.0397],
+    messages: [{ name: "Ava", text: "I made a short route with three shops close to each other." }]
+  },
+  {
+    id: "act-study-sprint",
+    icon: "💻",
+    category: "Study",
+    status: "present",
+    host: "Liam",
+    title: "Liam wants to do a focused study sprint",
+    shortTitle: "Quiet study sprint",
+    place: "Korea University Study Lounge",
+    timeLabel: "Today · 7:00 PM",
+    description: "Two focused 40-minute sessions with a short break between them. Quiet participation is encouraged.",
+    capacity: 10,
+    difficulty: "Bring your own task",
+    openness: "Join silently okay",
+    languages: ["English", "Korean"],
+    vibe: "Quiet accountability",
+    hostNote: "No introductions are required. Choose a seat, work quietly, and join the break only if you want.",
+    boundary: "The chat will be muted after the study session.",
+    joined: 6,
+    members: ["Liam", "Chloe", "Owen", "Nora", "Kai", "Ivy"],
+    coords: [37.5904, 127.0334],
+    messages: [{ name: "Liam", text: "The first focus timer starts at 7:10, so arriving a little late is fine." }]
+  },
+  {
+    id: "act-language-swap",
+    icon: "💬",
+    category: "Other",
+    status: "present",
+    host: "Nora",
+    title: "Nora wants to host a casual language swap",
+    shortTitle: "Language swap circle",
+    place: "Anam Community Lounge",
+    timeLabel: "Friday · 5:30 PM",
+    description: "Practice short conversations in different languages using simple topic cards and small rotating groups.",
+    capacity: 12,
+    difficulty: "Any language level",
+    openness: "Listening is welcome",
+    languages: ["English", "Korean", "Mandarin Chinese", "Japanese"],
+    vibe: "Friendly and flexible",
+    hostNote: "You can participate by listening first. Mistakes and mixed languages are completely okay.",
+    boundary: "Sharing contact details after the activity is always optional.",
+    joined: 5,
+    members: ["Nora", "Ken", "Mei", "Jisoo", "Amir"],
+    coords: [37.5861, 127.0332],
+    messages: [{ name: "Nora", text: "I will bring easy conversation cards so nobody has to think of a topic alone." }]
   }
 ];
 
@@ -487,6 +625,8 @@ const state = {
   aiLivePlaces: [],
   aiPlaceTargets: {},
   joinedActivities: new Set(),
+  leftActivities: new Set(),
+  deletedChatIds: new Set(),
   friends: new Set(["John", "Emma", "Alex"]),
   activeChatId: "act-hike",
   notifications: [
@@ -497,10 +637,15 @@ const state = {
   currentModal: null,
   pendingProfilePhoto: "",
   pendingDeletePhotoIndex: null,
+  pendingDeclineNotificationId: null,
+  pendingLeaveActivityId: null,
+  pendingRemoveFriendName: null,
+  pendingDeleteChatId: null,
   photoViewerReturnToGallery: false,
   authMode: "login",
   toastTimer: null,
   aiCreateIdeas: {},
+  aiMatching: false,
   aiMessages: [
     { sender: "bot", text: "Hi, I can recommend existing activities or suggest a new one based on your mood and timing." }
   ]
@@ -818,7 +963,7 @@ function renderCategoryStrip() {
 
 function getActivityMarkerHtml(activity) {
   const category = getCategory(activity.category);
-  return `<div class="map-activity-marker" style="--marker-start:${category.colors[0]}; --marker-end:${category.colors[1]};">${activity.icon}</div>`;
+  return `<div class="map-activity-marker" style="--marker-start:${category.colors[0]}; --marker-end:${category.colors[1]};" title="${escapeHtml(category.name)}">${category.icon}</div>`;
 }
 
 function createMarkerIcon(activity) {
@@ -1043,18 +1188,18 @@ function createAccuracyCircle(latitude, longitude, accuracy) {
       map: state.map,
       center: new naver.maps.LatLng(latitude, longitude),
       radius: accuracy,
-      strokeColor: "#18b394",
+      strokeColor: "#2563eb",
       strokeOpacity: 0.8,
       strokeWeight: 1,
-      fillColor: "#18b394",
+      fillColor: "#2563eb",
       fillOpacity: 0.1
     });
   }
 
   return L.circle([latitude, longitude], {
     radius: accuracy,
-    color: "#18b394",
-    fillColor: "#18b394",
+    color: "#2563eb",
+    fillColor: "#2563eb",
     fillOpacity: 0.1,
     weight: 1
   }).addTo(state.map);
@@ -1145,6 +1290,10 @@ function updateActivityInfoModal() {
     ...(activity.languages || []).map(language => `Speaks ${language}`)
   ].filter(Boolean).map(item => `<span class="filter-chip">${item}</span>`).join("");
   qs("#activityInfoBoundary").textContent = activity.boundary || "Activity-only chat by default, with friendship optional after the meetup.";
+  const canLeaveFromChat = state.currentView === "chat" && activity.status === "present";
+  qs("#activityInfoLeaveBtn").classList.toggle("hidden", !canLeaveFromChat);
+  const canDeletePastChat = state.currentView === "chat" && activity.status === "past";
+  qs("#activityInfoDeleteChatBtn").classList.toggle("hidden", !canDeletePastChat);
 }
 
 function renderFriendList() {
@@ -1163,7 +1312,8 @@ function renderFriendList() {
           <span>${friend.interests.join(" · ")}</span>
         </div>
         <div class="friend-actions">
-          <button class="mini-button" type="button" data-start-direct-chat="${name}">Message</button>
+          <button class="mini-button friend-message-button" type="button" data-start-direct-chat="${name}">Message</button>
+          <button class="friend-settings-button" type="button" data-action="request-remove-friend" data-friend-name="${escapeHtml(name)}" aria-label="Remove ${escapeHtml(name)} from friends" title="Remove friend">🗑️</button>
         </div>
       </article>
     `;
@@ -1458,7 +1608,7 @@ function openDirectChat(name) {
 function renderConversationList() {
   const cards = state.activities.filter(activity => {
     if (state.currentMessageType === "friends") return activity.status === "friend";
-    return activity.status === state.currentChatFilter;
+    return activity.status === state.currentChatFilter && !state.leftActivities.has(activity.id) && !state.deletedChatIds.has(activity.id);
   });
 
   if (!cards.length) {
@@ -1526,6 +1676,7 @@ function joinSelectedActivity() {
     activity.joined += 1;
     activity.messages.push({ name: "You", text: `I just joined ${activity.shortTitle}. Looking forward to it!` });
     state.joinedActivities.add(activity.id);
+    state.leftActivities.delete(activity.id);
     state.activeChatId = activity.id;
     showActivity(activity.id);
     renderMapStats();
@@ -1537,6 +1688,95 @@ function joinSelectedActivity() {
 
   state.activeChatId = activity.id;
   openView("chat");
+}
+
+function leaveSelectedActivity() {
+  const activity = getActivityById(state.pendingLeaveActivityId || state.activeChatId || state.selectedActivityId);
+  if (!activity || activity.status === "friend") return;
+
+  if (activity.members.includes("You")) {
+    activity.members = activity.members.filter(member => member !== "You");
+    activity.joined = Math.max(activity.joined - 1, 0);
+  }
+  state.joinedActivities.delete(activity.id);
+  state.leftActivities.add(activity.id);
+  state.pendingLeaveActivityId = null;
+  closeModal("leaveActivityModal");
+  closeModal("activityInfoModal");
+  renderMapStats();
+  renderConversationList();
+  showToast(`You left ${activity.shortTitle}.`);
+  openMessagesView();
+}
+
+function requestLeaveActivity() {
+  const activity = getActivityById(state.activeChatId || state.selectedActivityId);
+  if (!activity || activity.status !== "present") return;
+  state.pendingLeaveActivityId = activity.id;
+  qs("#leaveActivityMessage").textContent = `Are you sure you want to leave ${activity.shortTitle} and its chat?`;
+  openModal("leaveActivityModal");
+}
+
+function cancelLeaveActivity() {
+  state.pendingLeaveActivityId = null;
+  closeModal("leaveActivityModal");
+}
+
+function requestDeleteChat() {
+  const activity = getActivityById(state.activeChatId || state.selectedActivityId);
+  if (!activity || activity.status !== "past") return;
+  state.pendingDeleteChatId = activity.id;
+  qs("#deleteChatMessage").textContent = `Delete the past activity chat for ${activity.shortTitle}?`;
+  openModal("deleteChatModal");
+}
+
+function cancelDeleteChat() {
+  state.pendingDeleteChatId = null;
+  closeModal("deleteChatModal");
+}
+
+function confirmDeleteChat() {
+  const activity = getActivityById(state.pendingDeleteChatId);
+  if (!activity || activity.status !== "past") {
+    cancelDeleteChat();
+    return;
+  }
+  state.deletedChatIds.add(activity.id);
+  state.pendingDeleteChatId = null;
+  closeModal("deleteChatModal");
+  closeModal("activityInfoModal");
+  renderConversationList();
+  showToast(`${activity.shortTitle} chat was deleted.`);
+  openMessagesView();
+}
+
+function requestRemoveFriend(name) {
+  if (!state.friends.has(name)) return;
+  state.pendingRemoveFriendName = name;
+  qs("#removeFriendMessage").textContent = `Are you sure you want to remove ${name} from your friends?`;
+  openModal("removeFriendModal");
+}
+
+function cancelRemoveFriend() {
+  state.pendingRemoveFriendName = null;
+  closeModal("removeFriendModal");
+}
+
+function confirmRemoveFriend() {
+  const name = state.pendingRemoveFriendName;
+  if (!name || !state.friends.has(name)) {
+    cancelRemoveFriend();
+    return;
+  }
+
+  state.friends.delete(name);
+  state.activities = state.activities.filter(activity => !(activity.status === "friend" && activity.shortTitle === name));
+  state.pendingRemoveFriendName = null;
+  closeModal("removeFriendModal");
+  renderFriendList();
+  renderConversationList();
+  renderMapStats();
+  showToast(`${name} was removed from your friends.`);
 }
 
 function chooseBoundaryOption(choice) {
@@ -1595,35 +1835,11 @@ async function locateUser() {
     return;
   }
 
+  qs("#activitySheet").classList.add("hidden");
+  qs("#locateUserButton").classList.add("locating");
+  qs("#locateUserButton").disabled = true;
   const permissionState = await getGeolocationPermissionState();
-  showToast(`Requesting phone GPS permission... Browser says: ${permissionState}.`, 6000);
-
-  let bestPosition = null;
-  let settled = false;
-  let watchId = null;
-  let fallbackTimer = null;
-
-  const finishLocationSearch = message => {
-    if (settled) return;
-    settled = true;
-    if (watchId !== null) navigator.geolocation.clearWatch(watchId);
-    if (fallbackTimer !== null) clearTimeout(fallbackTimer);
-
-    if (!bestPosition) {
-      showToast(message || "Could not get a GPS fix. Check browser location permission and try again outdoors.", 8000);
-      return;
-    }
-
-    const { latitude, longitude, accuracy } = bestPosition.coords;
-    setMapCenter([latitude, longitude], accuracy <= 80 ? 17 : 16);
-    renderUserLocation(latitude, longitude, accuracy);
-
-    const roundedAccuracy = Math.round(accuracy);
-    const accuracyNote = roundedAccuracy > 100
-      ? `Browser accuracy is broad: about ${roundedAccuracy}m.`
-      : `Accurate to about ${roundedAccuracy}m.`;
-    showToast(`Centered on your real location. ${accuracyNote}`, 6000);
-  };
+  showToast("Finding your current location...", 3000);
 
   const explainLocationError = error => {
     if (error.code === error.PERMISSION_DENIED) {
@@ -1640,28 +1856,27 @@ async function locateUser() {
     return "Location is unavailable on this device/browser.";
   };
 
-  watchId = navigator.geolocation.watchPosition(
+  navigator.geolocation.getCurrentPosition(
     position => {
-      if (!bestPosition || position.coords.accuracy < bestPosition.coords.accuracy) {
-        bestPosition = position;
-        const { latitude, longitude, accuracy } = position.coords;
-        setMapCenter([latitude, longitude], accuracy <= 80 ? 17 : 16);
-        renderUserLocation(latitude, longitude, accuracy);
-      }
-
-      if (position.coords.accuracy <= 50) {
-        finishLocationSearch();
-      }
+      const { latitude, longitude, accuracy } = position.coords;
+      refreshMapSize();
+      renderUserLocation(latitude, longitude, accuracy);
+      setMapCenter([latitude, longitude], accuracy <= 100 ? 17 : 16);
+      qs("#locateUserButton").classList.remove("locating");
+      qs("#locateUserButton").disabled = false;
+      showToast(`You are here · accuracy about ${Math.round(accuracy)}m`, 4500);
     },
-    error => finishLocationSearch(explainLocationError(error)),
+    error => {
+      qs("#locateUserButton").classList.remove("locating");
+      qs("#locateUserButton").disabled = false;
+      showToast(explainLocationError(error), 8000);
+    },
     {
       enableHighAccuracy: true,
-      maximumAge: 0,
-      timeout: 15000
+      maximumAge: 10000,
+      timeout: 12000
     }
   );
-
-  fallbackTimer = setTimeout(() => finishLocationSearch(), 16000);
 }
 
 function renderUserLocation(latitude, longitude, accuracy) {
@@ -1810,14 +2025,34 @@ function renderCategoryGrid() {
   `).join("");
 }
 
+function formatDateInputValue(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function updateQuickDateButtons() {
+  const selectedDate = qs("#activityDateInput").value;
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  const quickDates = {
+    today: formatDateInputValue(today),
+    tomorrow: formatDateInputValue(tomorrow)
+  };
+
+  qsa("[data-quick-date]").forEach(button => {
+    button.classList.toggle("active", quickDates[button.dataset.quickDate] === selectedDate);
+  });
+}
+
 function setQuickDate(type) {
   const dateInput = qs("#activityDateInput");
   const date = new Date();
   if (type === "tomorrow") date.setDate(date.getDate() + 1);
-  dateInput.value = date.toISOString().split("T")[0];
-  qsa("[data-quick-date]").forEach(button => {
-    button.classList.toggle("active", button.dataset.quickDate === type);
-  });
+  dateInput.value = formatDateInputValue(date);
+  updateQuickDateButtons();
 }
 
 function formatTimeLabel(dateValue, timeValue) {
@@ -1870,6 +2105,24 @@ function resetCreateForm() {
   updatePlaceStatus("Type a place and select the best match so MapMeet can pin it accurately.");
   renderCategoryGrid();
   setQuickDate("today");
+  updateCustomActivityChoices();
+}
+
+function updateCustomActivityChoices() {
+  ["Fit", "Level", "Vibe"].forEach(field => {
+    const select = qs(`#activity${field}Input`);
+    const customInput = qs(`#activity${field}OtherInput`);
+    const isOther = select.value === "Other";
+    customInput.classList.toggle("hidden", !isOther);
+    customInput.required = isOther;
+    if (!isOther) customInput.value = "";
+  });
+}
+
+function getActivityChoiceValue(field, fallback) {
+  const selected = qs(`#activity${field}Input`).value.trim();
+  if (selected !== "Other") return selected || fallback;
+  return qs(`#activity${field}OtherInput`).value.trim() || fallback;
 }
 
 function getSelectedActivityLanguages() {
@@ -1955,9 +2208,9 @@ function setSelectedProfileLanguages(languages) {
 function writeDescriptionWithAiHelp() {
   const title = qs("#activityTitleInput").value.trim() || "this activity";
   const place = qs("#activityPlaceInput").value.trim();
-  const fit = qs("#activityFitInput").value.trim() || "newcomers welcome";
-  const level = qs("#activityLevelInput").value.trim() || "beginner-friendly";
-  const vibe = qs("#activityVibeInput").value.trim() || "casual small group";
+  const fit = getActivityChoiceValue("Fit", "newcomers welcome");
+  const level = getActivityChoiceValue("Level", "beginner-friendly");
+  const vibe = getActivityChoiceValue("Vibe", "casual small group");
   const languages = getSelectedActivityLanguages();
   const languageText = languages.length ? languages.join(" / ") : "any shared language";
   const placeText = place ? ` at ${place}` : "";
@@ -1974,10 +2227,10 @@ async function createActivity(event) {
   const title = qs("#activityTitleInput").value.trim();
   const placeText = qs("#activityPlaceInput").value.trim();
   const description = qs("#activityDescInput").value.trim() || "New activity created by a MapMeet user.";
-  const fit = qs("#activityFitInput").value.trim() || "Newcomers welcome";
-  const level = qs("#activityLevelInput").value.trim() || "Beginner-friendly";
+  const fit = getActivityChoiceValue("Fit", "Newcomers welcome");
+  const level = getActivityChoiceValue("Level", "Beginner-friendly");
   const selectedLanguages = getSelectedActivityLanguages();
-  const vibe = qs("#activityVibeInput").value.trim() || "Casual small group";
+  const vibe = getActivityChoiceValue("Vibe", "Casual small group");
   const hostNote = qs("#activityHostNoteInput").value.trim() || "New people are welcome. Join the activity chat to coordinate before arriving.";
   const capacity = Math.max(2, Math.min(20, Number(qs("#activityLimitInput").value) || 6));
   const dateValue = qs("#activityDateInput").value;
@@ -2308,7 +2561,7 @@ function respondToAiLocal(prompt, showUserMessage = true) {
 
     appendAiMessage(
       "bot",
-      `<strong>Best match: ${escapeHtml(top.shortTitle)}</strong><br>I found ${matches.length} good ${matches.length === 1 ? "option" : "options"} based on your mood:<div class="ai-recommendation-list">${matchCards}</div>`
+      `<strong>Here is your best match: ${escapeHtml(top.shortTitle)}</strong><br>I found ${matches.length} suitable ${matches.length === 1 ? "activity" : "activities"} based on what you asked:<div class="ai-recommendation-list">${matchCards}</div>`
     );
     appendAiMessage("bot", `If none of those feel quite right, I can help create a tailored plan: <strong>${escapeHtml(idea.title)}</strong>. ${escapeHtml(idea.description)}`, "", idea);
     return;
@@ -2316,7 +2569,7 @@ function respondToAiLocal(prompt, showUserMessage = true) {
 
   appendAiMessage(
     "bot",
-    `I could not find a strong match on the current map, so I drafted a better fit: <strong>${escapeHtml(idea.title)}</strong> at ${escapeHtml(idea.place)}. ${escapeHtml(idea.description)}`,
+    `<strong>Here is a plan that answers your request:</strong><br>${escapeHtml(idea.title)} at ${escapeHtml(idea.place)}. ${escapeHtml(idea.description)}`,
     "",
     idea
   );
@@ -2462,8 +2715,9 @@ function renderRealAiResponse(result) {
 }
 
 async function respondToAi(prompt) {
+  if (state.aiMatching) return;
   appendAiMessage("user", prompt);
-  appendAiMessage("bot", "Thinking with real AI...");
+  setAiMatching(true);
 
   try {
     state.aiLivePlaces = await fetchLivePlacesForPrompt(prompt);
@@ -2490,9 +2744,50 @@ async function respondToAi(prompt) {
     const result = await response.json();
     renderRealAiResponse(result);
   } catch (error) {
-    appendAiMessage("bot", `Real AI is not available yet (${escapeHtml(error.message)}). I will use the prototype recommender instead.`);
+    console.warn("Online AI matching unavailable; using the built-in matcher.", error);
     respondToAiLocal(prompt, false);
+  } finally {
+    setAiMatching(false);
   }
+}
+
+function setAiMatching(isMatching) {
+  state.aiMatching = isMatching;
+  qs("#aiMatchStatus").classList.toggle("hidden", !isMatching);
+  qs("#aiModalStatus").classList.toggle("hidden", !isMatching);
+  qs("#aiMatchButton").classList.toggle("matching", isMatching);
+  qs("#aiSubmitBtn").disabled = isMatching;
+  qs("#aiInput").disabled = isMatching;
+}
+
+function requestFriendDecline(notificationId) {
+  const notification = state.notifications.find(item => item.id === notificationId && item.type === "pending");
+  if (!notification) return;
+  state.pendingDeclineNotificationId = notificationId;
+  qs("#declineFriendMessage").textContent = `Are you sure you want to decline ${notification.name}'s friend request?`;
+  openModal("declineFriendModal");
+}
+
+function cancelFriendDecline() {
+  state.pendingDeclineNotificationId = null;
+  closeModal("declineFriendModal");
+}
+
+function confirmFriendDecline() {
+  const notificationId = state.pendingDeclineNotificationId;
+  const notification = state.notifications.find(item => item.id === notificationId);
+  if (!notification) {
+    cancelFriendDecline();
+    return;
+  }
+
+  state.notifications = state.notifications.filter(item => item.id !== notificationId);
+  state.pendingDeclineNotificationId = null;
+  closeModal("declineFriendModal");
+  renderNotifications();
+  renderFriendList();
+  renderMapStats();
+  showToast(`Friend request from ${notification.name} declined.`);
 }
 
 function handleNotificationAction(action, notificationId) {
@@ -2508,8 +2803,8 @@ function handleNotificationAction(action, notificationId) {
   }
 
   if (action === "decline") {
-    state.notifications = state.notifications.filter(item => item.id !== notificationId);
-    showToast("Friend request declined.");
+    requestFriendDecline(notificationId);
+    return;
   }
 
   renderNotifications();
@@ -2579,6 +2874,17 @@ function handleGlobalClick(event) {
   if (target.dataset.action === "close-activity-info") closeModal("activityInfoModal");
   if (target.dataset.action === "close-boundary") closeModal("boundaryModal");
   if (target.dataset.action === "join-activity") joinSelectedActivity();
+  if (target.dataset.action === "request-leave-activity") requestLeaveActivity();
+  if (target.dataset.action === "cancel-leave-activity") cancelLeaveActivity();
+  if (target.dataset.action === "confirm-leave-activity") leaveSelectedActivity();
+  if (target.dataset.action === "cancel-friend-decline") cancelFriendDecline();
+  if (target.dataset.action === "confirm-friend-decline") confirmFriendDecline();
+  if (target.dataset.action === "request-remove-friend") requestRemoveFriend(target.dataset.friendName);
+  if (target.dataset.action === "cancel-remove-friend") cancelRemoveFriend();
+  if (target.dataset.action === "confirm-remove-friend") confirmRemoveFriend();
+  if (target.dataset.action === "request-delete-chat") requestDeleteChat();
+  if (target.dataset.action === "cancel-delete-chat") cancelDeleteChat();
+  if (target.dataset.action === "confirm-delete-chat") confirmDeleteChat();
   if (target.dataset.action === "go-back") goBack();
   if (target.dataset.action === "open-messages") openMessagesView();
   if (target.dataset.action === "open-chat-info") openChatInfo();
@@ -2656,6 +2962,22 @@ function handleGlobalClick(event) {
 
 function handleModalBackdrop(event) {
   if (!event.target.classList.contains("modal")) return;
+  if (event.target.id === "leaveActivityModal") {
+    cancelLeaveActivity();
+    return;
+  }
+  if (event.target.id === "declineFriendModal") {
+    cancelFriendDecline();
+    return;
+  }
+  if (event.target.id === "removeFriendModal") {
+    cancelRemoveFriend();
+    return;
+  }
+  if (event.target.id === "deleteChatModal") {
+    cancelDeleteChat();
+    return;
+  }
   closeModal(event.target.id);
 }
 
@@ -2677,6 +2999,11 @@ function attachEventListeners() {
   });
   qs("#activityTitleInput").addEventListener("input", applyCategorySuggestion);
   qs("#activityDescInput").addEventListener("input", applyCategorySuggestion);
+  ["Fit", "Level", "Vibe"].forEach(field => {
+    qs(`#activity${field}Input`).addEventListener("change", updateCustomActivityChoices);
+  });
+  qs("#activityDateInput").addEventListener("change", updateQuickDateButtons);
+  qs("#activityDateInput").addEventListener("input", updateQuickDateButtons);
   qs("#activityLanguageSearch").addEventListener("input", () => renderLanguageChoices());
   qs("#activityLanguageSearch").addEventListener("keydown", event => {
     if (event.key === "Enter") {

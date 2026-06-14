@@ -68,11 +68,17 @@
       <section class="view view-active map-view" data-view="map" aria-label="Map screen">
         <div class="map-panel">
           <div class="map-headline">
-            <div>
-              <p class="eyebrow small">Today around Anam</p>
+            <div class="map-intro">
+              <span class="map-intro-label">Explore nearby</span>
               <h2>Join when it feels comfortable</h2>
             </div>
-            <button class="secondary-pill" type="button" data-action="open-ai">AI Match</button>
+            <div class="ai-match-control">
+              <button class="secondary-pill" id="aiMatchButton" type="button" data-action="open-ai" aria-label="Open smart activity matching"><span aria-hidden="true">✨</span> AI Match</button>
+              <span class="ai-match-status hidden" id="aiMatchStatus" role="status" aria-live="polite">
+                <span class="loading-spinner" aria-hidden="true"></span>
+                Algorithmic matching in progress
+              </span>
+            </div>
           </div>
 
           <div class="map-stats" id="mapStats"></div>
@@ -83,7 +89,7 @@
             <div id="liveMap" aria-label="Activity map"></div>
             <div class="map-provider-badge" id="mapProviderBadge">Live map</div>
             <div class="map-floating-actions">
-              <button class="floating-button locate-button" type="button" data-action="locate-user" aria-label="Find my current location" title="Find my current location">🧭</button>
+              <button class="floating-button locate-button" id="locateUserButton" type="button" data-action="locate-user" aria-label="Show my current location" title="Show my current location">🧭</button>
             </div>
           </div>
 
@@ -253,24 +259,79 @@
         <button class="nav-button" type="button" data-nav="messages">💬<span>Messages</span></button>
       </nav>
 
-      <section class="modal" id="aiModal" aria-hidden="true">
-        <div class="modal-panel">
+      <section class="modal ai-match-modal" id="aiModal" aria-hidden="true">
+        <div class="modal-panel ai-match-panel">
           <div class="modal-header">
             <div>
               <p class="eyebrow small">Smart guidance</p>
-              <h2>AI Activity Match</h2>
+              <h2>✨ Activity Match</h2>
             </div>
             <button class="close-button" type="button" data-action="close-ai" aria-label="Close AI suggestions">×</button>
           </div>
           <div class="page-card compact">
             <p>Tell MapMeet what kind of mood you are in, and it will recommend nearby activities or a new idea to start.</p>
           </div>
+          <div class="ai-modal-status hidden" id="aiModalStatus" role="status" aria-live="polite">
+            <span class="loading-spinner" aria-hidden="true"></span>
+            <span><strong>Algorithmic matching in progress</strong><small>Comparing your preferences with nearby activities...</small></span>
+          </div>
           <div class="chip-wrap" id="aiSuggestionPrompts"></div>
           <div class="ai-feed" id="aiFeed"></div>
           <form class="input-bar modal-input" id="aiForm">
             <input id="aiInput" class="text-input" type="text" placeholder="Example: I want a quiet place to study tonight" maxlength="180" />
-            <button class="primary-button small" type="submit">Send</button>
+            <button class="primary-button small" id="aiSubmitBtn" type="submit">Send</button>
           </form>
+        </div>
+      </section>
+
+      <section class="modal" id="declineFriendModal" aria-hidden="true">
+        <div class="modal-panel confirmation-panel" role="dialog" aria-modal="true" aria-labelledby="declineFriendTitle">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow small">Friend request</p>
+              <h2 id="declineFriendTitle">Decline this request?</h2>
+            </div>
+            <button class="close-button" type="button" data-action="cancel-friend-decline" aria-label="Cancel declining friend request">×</button>
+          </div>
+          <p id="declineFriendMessage">Are you sure you want to decline this friend request?</p>
+          <div class="confirmation-actions">
+            <button class="primary-button ghost" type="button" data-action="cancel-friend-decline">Keep Request</button>
+            <button class="primary-button danger" type="button" data-action="confirm-friend-decline">Decline Request</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="modal modal-priority" id="removeFriendModal" aria-hidden="true">
+        <div class="modal-panel confirmation-panel" role="dialog" aria-modal="true" aria-labelledby="removeFriendTitle">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow small">Friends</p>
+              <h2 id="removeFriendTitle">Remove this friend?</h2>
+            </div>
+            <button class="close-button" type="button" data-action="cancel-remove-friend" aria-label="Cancel removing friend">×</button>
+          </div>
+          <p id="removeFriendMessage">Are you sure you want to remove this person from your friends?</p>
+          <div class="confirmation-actions">
+            <button class="primary-button ghost" type="button" data-action="cancel-remove-friend">Keep Friend</button>
+            <button class="primary-button danger" type="button" data-action="confirm-remove-friend">Remove Friend</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="modal modal-priority" id="deleteChatModal" aria-hidden="true">
+        <div class="modal-panel confirmation-panel" role="dialog" aria-modal="true" aria-labelledby="deleteChatTitle">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow small">Past activity</p>
+              <h2 id="deleteChatTitle">Delete this chat?</h2>
+            </div>
+            <button class="close-button" type="button" data-action="cancel-delete-chat" aria-label="Cancel deleting chat">×</button>
+          </div>
+          <p id="deleteChatMessage">This past activity chat will be removed from Messages.</p>
+          <div class="confirmation-actions">
+            <button class="primary-button ghost" type="button" data-action="cancel-delete-chat">Keep Chat</button>
+            <button class="primary-button danger" type="button" data-action="confirm-delete-chat">Delete Chat</button>
+          </div>
         </div>
       </section>
 
@@ -331,7 +392,9 @@
                   <option>Solo joiners welcome</option>
                   <option>Join silently okay</option>
                   <option>Open to anyone</option>
+                  <option value="Other">Other (write your own)</option>
                 </select>
+                <input id="activityFitOtherInput" class="text-input custom-choice-input hidden" type="text" placeholder="Describe who this activity suits" maxlength="50" />
               </label>
               <label>
                 <span>Level</span>
@@ -341,7 +404,9 @@
                   <option>Very easy</option>
                   <option>Easy join</option>
                   <option>Mixed skill</option>
+                  <option value="Other">Other (write your own)</option>
                 </select>
+                <input id="activityLevelOtherInput" class="text-input custom-choice-input hidden" type="text" placeholder="Describe the level" maxlength="50" />
               </label>
             </div>
 
@@ -364,7 +429,9 @@
                   <option>Relaxed chat</option>
                   <option>Food-first</option>
                   <option>Active but relaxed</option>
+                  <option value="Other">Other (write your own)</option>
                 </select>
+                <input id="activityVibeOtherInput" class="text-input custom-choice-input hidden" type="text" placeholder="Describe the vibe" maxlength="50" />
               </label>
             </div>
 
@@ -416,6 +483,25 @@
           <div class="detail-card">
             <h4>After the activity</h4>
             <p id="activityInfoBoundary"></p>
+          </div>
+          <button class="primary-button danger wide hidden" id="activityInfoLeaveBtn" type="button" data-action="request-leave-activity">Leave Activity</button>
+          <button class="primary-button danger wide hidden" id="activityInfoDeleteChatBtn" type="button" data-action="request-delete-chat">Delete Chat</button>
+        </div>
+      </section>
+
+      <section class="modal modal-priority" id="leaveActivityModal" aria-hidden="true">
+        <div class="modal-panel confirmation-panel" role="dialog" aria-modal="true" aria-labelledby="leaveActivityTitle">
+          <div class="modal-header">
+            <div>
+              <p class="eyebrow small">Leave activity</p>
+              <h2 id="leaveActivityTitle">Leave this activity chat?</h2>
+            </div>
+            <button class="close-button" type="button" data-action="cancel-leave-activity" aria-label="Cancel leaving activity">×</button>
+          </div>
+          <p id="leaveActivityMessage">Are you sure you want to leave this activity and its chat?</p>
+          <div class="confirmation-actions">
+            <button class="primary-button ghost" type="button" data-action="cancel-leave-activity">Stay in Activity</button>
+            <button class="primary-button danger" type="button" data-action="confirm-leave-activity">Leave Activity</button>
           </div>
         </div>
       </section>
@@ -593,6 +679,6 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="config.js"></script>
-  <script src="script.js?v=naver-english-map-1"></script>
+  <script src="script.js?v=custom-activity-options-12"></script>
 </body>
 </html>
