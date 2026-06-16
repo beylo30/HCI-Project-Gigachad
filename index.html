@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="style.css?v=top-gap-fix-1" />
+  <link rel="stylesheet" href="style.css?v=create-flow-1" />
 </head>
 <body>
   <main class="app-shell">
@@ -340,117 +340,152 @@
           <div class="modal-header">
             <div>
               <p class="eyebrow small">Create activity</p>
-              <h2>Start a plan others can join</h2>
+              <h2>Create activity</h2>
             </div>
             <button class="close-button" type="button" data-action="close-create" aria-label="Close create activity form">×</button>
           </div>
 
           <form id="createForm" class="form-grid">
-            <label>
-              <span>Activity title</span>
-              <input id="activityTitleInput" class="text-input" type="text" placeholder="Study sprint at a cafe" maxlength="70" />
-            </label>
-
-            <label>
-              <span>Place / meeting point</span>
-              <input id="activityPlaceInput" class="text-input" type="text" placeholder="Nice Caffein Club Anam" maxlength="90" />
-            </label>
-
-            <p class="helper-text" id="placeStatus">Type a place and select the best match so MapMeet can pin it accurately.</p>
-            <div class="place-suggestions" id="placeSuggestions"></div>
-
-            <div class="two-col">
-              <label>
-                <span>Date</span>
-                <input id="activityDateInput" class="text-input" type="date" />
-              </label>
-              <label>
-                <span>Time</span>
-                <input id="activityTimeInput" class="text-input" type="time" />
-              </label>
+            <div class="create-progress" aria-label="Create activity progress">
+              <div class="create-step-dot active" data-create-progress="0">1</div>
+              <div class="create-step-line"></div>
+              <div class="create-step-dot" data-create-progress="1">2</div>
+              <div class="create-step-line"></div>
+              <div class="create-step-dot" data-create-progress="2">3</div>
+              <div class="create-step-line"></div>
+              <div class="create-step-dot" data-create-progress="3">4</div>
             </div>
 
-            <div class="chip-wrap" id="quickDateRow">
-              <button class="filter-chip active" type="button" data-quick-date="today">Today</button>
-              <button class="filter-chip" type="button" data-quick-date="tomorrow">Tomorrow</button>
+            <div class="create-step-intro">
+              <p class="eyebrow small" id="createStepEyebrow">Step 1 of 4</p>
+              <h3 id="createStepTitle">Start a plan others can join</h3>
+              <p id="createStepHint">Add the activity name and a real meeting point.</p>
             </div>
 
-            <label>
-              <span class="field-row">
-                Short description
-                <button class="text-link inline-action" type="button" data-action="help-description">AI help</button>
-              </span>
-              <textarea id="activityDescInput" class="text-area" rows="4" placeholder="What should people expect, and who is this for?"></textarea>
-            </label>
-
-            <div class="two-col">
+            <section class="create-step active" data-create-step="0">
               <label>
-                <span>Fit</span>
-                <select id="activityFitInput" class="text-input">
-                  <option>Newcomers welcome</option>
-                  <option>First-timers welcome</option>
-                  <option>Solo joiners welcome</option>
-                  <option>Join silently okay</option>
-                  <option>Open to anyone</option>
-                  <option value="Other">Other (write your own)</option>
-                </select>
-                <input id="activityFitOtherInput" class="text-input custom-choice-input hidden" type="text" placeholder="Describe who this activity suits" maxlength="50" />
+                <span>Activity title</span>
+                <input id="activityTitleInput" class="text-input" type="text" placeholder="Study sprint at a cafe" maxlength="70" />
               </label>
-              <label>
-                <span>Level</span>
-                <select id="activityLevelInput" class="text-input">
-                  <option>Beginner-friendly</option>
-                  <option>Low-pressure</option>
-                  <option>Very easy</option>
-                  <option>Easy join</option>
-                  <option>Mixed skill</option>
-                  <option value="Other">Other (write your own)</option>
-                </select>
-                <input id="activityLevelOtherInput" class="text-input custom-choice-input hidden" type="text" placeholder="Describe the level" maxlength="50" />
-              </label>
-            </div>
 
-            <div class="two-col">
+              <label>
+                <span>Place / meeting point</span>
+                <input id="activityPlaceInput" class="text-input" type="text" placeholder="Nice Caffein Club Anam" maxlength="90" />
+              </label>
+
+              <p class="helper-text" id="placeStatus">Type a place and select the best match so MapMeet can pin it accurately.</p>
+              <div class="place-suggestions" id="placeSuggestions"></div>
+            </section>
+
+            <section class="create-step" data-create-step="1">
+              <div class="two-col">
+                <label>
+                  <span>Date</span>
+                  <input id="activityDateInput" class="text-input" type="date" />
+                </label>
+                <label>
+                  <span>Time</span>
+                  <input id="activityTimeInput" class="text-input" type="time" />
+                </label>
+              </div>
+
+              <div class="chip-wrap" id="quickDateRow">
+                <button class="filter-chip active" type="button" data-quick-date="today">Today</button>
+                <button class="filter-chip" type="button" data-quick-date="tomorrow">Tomorrow</button>
+              </div>
+
+              <label>
+                <span class="field-row">
+                  Short description
+                  <button class="text-link inline-action" type="button" data-action="help-description">AI help</button>
+                </span>
+                <textarea id="activityDescInput" class="text-area" rows="4" placeholder="What should people expect, and who is this for?"></textarea>
+              </label>
+            </section>
+
+            <section class="create-step" data-create-step="2">
+              <div class="two-col">
+                <label>
+                  <span>Joining comfort</span>
+                  <select id="activityFitInput" class="text-input">
+                    <option>Newcomers welcome</option>
+                    <option>Good for people coming alone</option>
+                    <option>Okay to join quietly</option>
+                    <option>Easy to leave after</option>
+                    <option>First-timers welcome</option>
+                    <option>Solo joiners welcome</option>
+                    <option>Open to anyone</option>
+                    <option value="Other">Other (write your own)</option>
+                  </select>
+                  <input id="activityFitOtherInput" class="text-input custom-choice-input hidden" type="text" placeholder="Describe who this activity suits" maxlength="50" />
+                </label>
+                <label>
+                  <span>Effort level</span>
+                  <select id="activityLevelInput" class="text-input">
+                    <option>No experience needed</option>
+                    <option>Beginner-friendly</option>
+                    <option>Low-pressure</option>
+                    <option>Very easy</option>
+                    <option>Easy join</option>
+                    <option>Mixed skill</option>
+                    <option>Active / energetic</option>
+                    <option>Focused / quiet</option>
+                    <option value="Other">Other (write your own)</option>
+                  </select>
+                  <input id="activityLevelOtherInput" class="text-input custom-choice-input hidden" type="text" placeholder="Describe the level" maxlength="50" />
+                </label>
+              </div>
+
               <label>
                 <span>Language</span>
-                <div class="language-picker">
-                  <div class="language-search-row">
-                    <input id="activityLanguageSearch" class="text-input language-search-input" type="search" placeholder="Search language" autocomplete="off" />
+                <div class="language-picker activity-language-picker">
+                  <div class="language-choice-list activity-language-list" id="activityLanguageInput"></div>
+                  <button class="text-link language-toggle-button" type="button" data-action="toggle-language-search">+ Add another language</button>
+                  <div class="language-search-row hidden" id="activityLanguageSearchRow">
+                    <input id="activityLanguageSearch" class="text-input language-search-input" type="search" placeholder="Search another language" autocomplete="off" />
                     <button class="primary-button small language-search-button" type="button" data-action="search-language">Search</button>
                   </div>
-                  <div class="language-choice-list" id="activityLanguageInput"></div>
                 </div>
               </label>
+
               <label>
-                <span>Vibe</span>
+                <span>Group vibe</span>
                 <select id="activityVibeInput" class="text-input">
+                  <option>Low-pressure and calm</option>
                   <option>Casual small group</option>
                   <option>Quiet focus</option>
                   <option>Relaxed chat</option>
-                  <option>Food-first</option>
+                  <option>Talkative and social</option>
                   <option>Active but relaxed</option>
+                  <option>Food-first hangout</option>
                   <option value="Other">Other (write your own)</option>
                 </select>
                 <input id="activityVibeOtherInput" class="text-input custom-choice-input hidden" type="text" placeholder="Describe the vibe" maxlength="50" />
               </label>
+            </section>
+
+            <section class="create-step" data-create-step="3">
+              <label>
+                <span>Participant limit</span>
+                <input id="activityLimitInput" class="text-input" type="number" min="2" max="20" value="6" />
+              </label>
+
+              <label>
+                <span>Welcome note</span>
+                <textarea id="activityHostNoteInput" class="text-area compact" rows="3" placeholder="Example: We will meet at the entrance first, so nobody has to arrive alone."></textarea>
+              </label>
+
+              <div>
+                <span class="field-label">Suggested category</span>
+                <div class="category-grid" id="categoryGrid"></div>
+              </div>
+            </section>
+
+            <div class="create-step-actions">
+              <button class="primary-button ghost" type="button" data-action="create-back">Back</button>
+              <button class="primary-button" type="button" data-action="create-next">Next</button>
+              <button class="primary-button hidden" type="submit">Create Activity</button>
             </div>
-
-            <label>
-              <span>Participant limit</span>
-              <input id="activityLimitInput" class="text-input" type="number" min="2" max="20" value="6" />
-            </label>
-
-            <label>
-              <span>Welcome note</span>
-              <textarea id="activityHostNoteInput" class="text-area compact" rows="3" placeholder="Example: We will meet at the entrance first, so nobody has to arrive alone."></textarea>
-            </label>
-
-            <div>
-              <span class="field-label">Suggested category</span>
-              <div class="category-grid" id="categoryGrid"></div>
-            </div>
-
-            <button class="primary-button wide" type="submit">Create Activity</button>
           </form>
         </div>
       </section>
@@ -679,6 +714,6 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="config.js"></script>
-  <script src="script.js?v=top-gap-fix-1"></script>
+  <script src="script.js?v=create-flow-1"></script>
 </body>
 </html>

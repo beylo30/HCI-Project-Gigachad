@@ -1797,6 +1797,30 @@ button {
   padding-bottom: 26px;
 }
 
+#createModal .modal-panel.large {
+  height: min(760px, calc(100dvh - 126px));
+  display: flex;
+  flex-direction: column;
+}
+
+#createModal .modal-header {
+  flex: 0 0 auto;
+}
+
+#createModal #createForm {
+  flex: 1 1 auto;
+  min-height: 0;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+}
+
+#createModal .create-step.active {
+  min-height: 0;
+  overflow-y: auto;
+  align-content: start;
+  padding-right: 4px;
+  overscroll-behavior: contain;
+}
+
 .custom-choice-input {
   margin-top: 8px;
   min-height: 44px;
@@ -1955,6 +1979,109 @@ button {
 .form-grid {
   display: grid;
   gap: 14px;
+}
+
+.create-progress {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 34px minmax(0, 1fr) 34px minmax(0, 1fr) 34px;
+  align-items: center;
+  gap: 6px;
+  margin: 2px 0 4px;
+}
+
+.create-step-dot {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(20, 33, 61, 0.08);
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.create-step-dot.active,
+.create-step-dot.complete {
+  background: var(--ink);
+  color: #fff;
+}
+
+.create-step-line {
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(20, 33, 61, 0.1);
+}
+
+.create-step-intro {
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(20, 33, 61, 0.06);
+}
+
+.create-step-intro h3,
+.create-step-intro p {
+  margin: 0;
+}
+
+.create-step-intro h3 {
+  font-family: "Manrope", sans-serif;
+}
+
+.create-step-intro p:last-child {
+  margin-top: 6px;
+  color: var(--muted);
+  line-height: 1.45;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.create-step {
+  display: none;
+  gap: 14px;
+  animation: stepReveal 180ms ease both;
+}
+
+.create-step.active {
+  display: grid;
+}
+
+.create-step-actions {
+  position: sticky;
+  bottom: -1px;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 10px;
+  margin: 4px -2px -2px;
+  padding: 12px 2px 2px;
+  background: linear-gradient(180deg, rgba(251, 249, 242, 0), rgba(251, 249, 242, 0.98) 34%);
+}
+
+.create-step-actions .primary-button {
+  width: 100%;
+}
+
+.create-step-actions .primary-button.hidden {
+  display: none;
+}
+
+.primary-button.disabled,
+.primary-button:disabled {
+  opacity: 0.46;
+  cursor: not-allowed;
+}
+
+@keyframes stepReveal {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .form-grid label,
@@ -2158,7 +2285,7 @@ button {
   }
 
   .view {
-    inset: 104px 0 78px;
+    inset: calc(max(14px, env(safe-area-inset-top)) + 56px) 0 78px;
   }
 
   .top-bar {

@@ -646,6 +646,7 @@ const state = {
   toastTimer: null,
   aiCreateIdeas: {},
   aiMatching: false,
+  createStep: 0,
   aiMessages: [
     { sender: "bot", text: "Hi, I can recommend existing activities or suggest a new one based on your mood and timing." }
   ]
@@ -812,6 +813,13 @@ function openView(viewName, keepHistory = true) {
   }
 }
 
+function returnToMapHome() {
+  qs("#activitySheet").classList.add("hidden");
+  state.selectedActivityId = null;
+  openView("map");
+  setTimeout(refreshMapSize, 120);
+}
+
 function switchView(viewName) {
   state.currentView = viewName;
   qsa(".view").forEach(view => view.classList.toggle("view-active", view.dataset.view === viewName));
@@ -850,6 +858,7 @@ function openModal(modalId) {
   qs(`#${modalId}`).classList.add("show");
   qs(`#${modalId}`).setAttribute("aria-hidden", "false");
   state.currentModal = modalId;
+  if (modalId === "createModal") setCreateStep(state.createStep || 0);
 }
 
 function closeModal(modalId) {
@@ -2092,10 +2101,92 @@ function confirmPlaceCandidate(index) {
   updatePlaceStatus(`Confirmed: ${candidate.shortName}${candidate.branchName ? ` · ${candidate.branchName}` : ""}`, "success");
 }
 
+const createStepMeta = [
+  {
+    eyebrow: "Step 1 of 4",
+    title: "Start a plan others can join",
+    hint: "Add the activity name and a real meeting point."
+  },
+  {
+    eyebrow: "Step 2 of 4",
+    title: "When and why",
+    hint: ""
+  },
+  {
+    eyebrow: "Step 3 of 4",
+    title: "Make it feel safe to join",
+    hint: ""
+  },
+  {
+    eyebrow: "Step 4 of 4",
+    title: "Final details",
+    hint: ""
+  }
+];
+
+function setCreateStep(step) {
+  const nextStep = Math.max(0, Math.min(createStepMeta.length - 1, step));
+  state.createStep = nextStep;
+  const meta = createStepMeta[nextStep];
+
+  qs("#createStepEyebrow").textContent = meta.eyebrow;
+  qs("#createStepTitle").textContent = meta.title;
+  qs("#createStepHint").textContent = meta.hint;
+  qs("#createStepHint").classList.toggle("hidden", !meta.hint);
+
+  qsa("[data-create-step]").forEach(section => {
+    section.classList.toggle("active", Number(section.dataset.createStep) === nextStep);
+  });
+  qsa("[data-create-progress]").forEach(dot => {
+    const dotStep = Number(dot.dataset.createProgress);
+    dot.classList.toggle("active", dotStep === nextStep);
+    dot.classList.toggle("complete", dotStep < nextStep);
+  });
+
+  const backButton = qs("[data-action='create-back']");
+  const nextButton = qs("[data-action='create-next']");
+  const submitButton = qs("#createForm button[type='submit']");
+  backButton.disabled = nextStep === 0;
+  backButton.classList.toggle("disabled", nextStep === 0);
+  nextButton.classList.toggle("hidden", nextStep === createStepMeta.length - 1);
+  submitButton.classList.toggle("hidden", nextStep !== createStepMeta.length - 1);
+
+  qs("#createModal .modal-panel")?.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function validateCreateStep(step) {
+  if (step !== 0) return true;
+
+  const title = qs("#activityTitleInput").value.trim();
+  const placeText = qs("#activityPlaceInput").value.trim();
+  if (!title || !placeText) {
+    showToast("Add a title and meeting place first.");
+    return false;
+  }
+
+  if (!state.selectedPlaceLocation) {
+    await lookupPlaceLocation();
+    showToast("Select the exact place suggestion before continuing.");
+    return false;
+  }
+
+  return true;
+}
+
+async function goToNextCreateStep() {
+  if (!(await validateCreateStep(state.createStep))) return;
+  setCreateStep(state.createStep + 1);
+}
+
+function goToPreviousCreateStep() {
+  setCreateStep(state.createStep - 1);
+}
+
 function resetCreateForm() {
   qs("#createForm").reset();
   qs("#activityLimitInput").value = 6;
   qs("#activityLanguageSearch").value = "";
+  qs("#activityLanguageSearchRow")?.classList.add("hidden");
   renderLanguageChoices();
   setSelectedActivityLanguages(["English", "Korean"]);
   state.selectedPlaceLocation = null;
@@ -2106,6 +2197,7 @@ function resetCreateForm() {
   renderCategoryGrid();
   setQuickDate("today");
   updateCustomActivityChoices();
+  setCreateStep(0);
 }
 
 function updateCustomActivityChoices() {
@@ -2505,15 +2597,17 @@ function openCreateFromAiIdea(key) {
   qs("#activityTitleInput").value = idea.title;
   qs("#activityPlaceInput").value = idea.place;
   qs("#activityDescInput").value = idea.description;
-  qs("#activityFitInput").value = idea.fit;
-  qs("#activityLevelInput").value = idea.level;
-  setSelectedActivityLanguages(idea.languages);
-  qs("#activityVibeInput").value = idea.vibe;
+  setSelectValue("#activityFitInput", idea.fit, "Newcomers welcome");
+  setSelectValue("#activityLevelInput", idea.level, "No experience needed");
+  setSelectedActivityLanguages(Array.isArray(idea.languages) ? idea.languages : ["English", "Korean"]);
+  setSelectValue("#activityVibeInput", idea.vibe, "Low-pressure and calm");
   qs("#activityHostNoteInput").value = idea.hostNote;
   qs("#activityLimitInput").value = 6;
   state.selectedCategory = idea.category;
   renderCategoryGrid();
   applyCategorySuggestion();
+  updateCustomActivityChoices();
+  setCreateStep(0);
   openModal("createModal");
   lookupPlaceLocation();
 }
@@ -2836,11 +2930,20 @@ function handleGlobalClick(event) {
   if (target.dataset.action === "open-notifications") openView("notifications");
   if (target.dataset.action === "open-ai") openModal("aiModal");
   if (target.dataset.action === "close-ai") closeModal("aiModal");
-  if (target.dataset.action === "open-create") openModal("createModal");
+  if (target.dataset.action === "open-create") {
+    setCreateStep(0);
+    openModal("createModal");
+  }
   if (target.dataset.action === "close-create") closeModal("createModal");
+  if (target.dataset.action === "create-next") goToNextCreateStep();
+  if (target.dataset.action === "create-back") goToPreviousCreateStep();
   if (target.dataset.action === "close-map-stat") closeModal("mapStatModal");
   if (target.dataset.action === "search-language") {
     renderLanguageChoices();
+    qs("#activityLanguageSearch").focus();
+  }
+  if (target.dataset.action === "toggle-language-search") {
+    qs("#activityLanguageSearchRow").classList.toggle("hidden");
     qs("#activityLanguageSearch").focus();
   }
   if (target.dataset.action === "search-profile-language") {
@@ -2890,7 +2993,7 @@ function handleGlobalClick(event) {
   if (target.dataset.action === "open-chat-info") openChatInfo();
   if (target.dataset.action === "locate-user") locateUser();
 
-  if (target.dataset.nav === "map") openView("map");
+  if (target.dataset.nav === "map") returnToMapHome();
   if (target.dataset.nav === "messages") openMessagesView();
 
   if (target.dataset.filterCategory) {

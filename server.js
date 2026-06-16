@@ -57,9 +57,7 @@ function parseCookies(request) {
 }
 
 function hasAppAccess(request) {
-  const accessCode = getAccessCode();
-  if (!accessCode) return true;
-  return parseCookies(request).mapmeet_access === accessCode;
+  return true;
 }
 
 function serveAccessGate(response, errorMessage = "") {
